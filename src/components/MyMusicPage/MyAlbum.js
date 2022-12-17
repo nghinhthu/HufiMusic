@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import EmptyContent from "../Bottom/EmptyContent";
 import LoadingSvg from "../loading/LoadingSvg";
@@ -8,8 +8,27 @@ import ItemChartList from "../TopChartPage/ItemChartList";
 import ItemArits from "./ItemArits";
 import SliderShow from "./SliderShow";
 
+import { auth, database } from "../../firebase/firebase-config";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 const MyAlbum = () => {
     const { docs } = useOutletContext();
+    const [myAlbumUpdate, setMyAlbumUpdate] = useState(false);
+    const users = useSelector((state) => state.users);
+
+    const handleDeleteAlbum = async (e) => {
+        const albumName = e.target.getAttribute("album-name");
+        const docRef = doc(database, "users", users.id);
+        const album = docs.myAlbum.filter((album) => album.name !== albumName);
+        await updateDoc(docRef, {
+            myAlbum: album,
+        });
+        toast('Xóa album thành công', {type: 'success'});
+        docs.myAlbum = album;
+        setMyAlbumUpdate(!myAlbumUpdate);
+    };
 
     if (!docs?.email) return <LoadingSvg></LoadingSvg>;
 
@@ -27,12 +46,16 @@ const MyAlbum = () => {
                             classAdd="mb-[36px]"
                             notRow
                             classAdd2="w-full"
-                            isMyPage={''
-                                // <div className="flex items-center justify-center gap-[10px]">
-                                //     <Link to="/mymusic/song" className="personal_play-all">
-                                //         Tất Cả <span className="material-icons-outlined ml-[2px]">chevron_right</span>
-                                //     </Link>
-                                // </div>
+                            isMyPage={
+                                <div
+                                    onClick={handleDeleteAlbum}
+                                    album-name={album.name}
+                                    className="flex items-center cursor-pointer justify-center gap-[10px]"
+                                >
+                                    {/* <Link to="/mymusic/song" className="personal_play-all"> */}
+                                    Xóa Album
+                                    {/* </Link> */}
+                                </div>
                             }
                             title={`Album ${album.name}`}
                         >

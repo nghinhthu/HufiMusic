@@ -27,7 +27,7 @@ const Siderleft = () => {
                         <img src="/pabicon.webp" alt="logo-dat-mp3" />
                     </div>
                     <p className="sider_brand-item-text">
-                       HUFI <span>MP3</span>
+                        D4T <span>MP3</span>
                     </p>
                 </Link>
             </div>

@@ -20,6 +20,8 @@ import { auth, database } from "../../firebase/firebase-config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import Comment from "./Comment";
+import { FacebookShareButton, TwitterShareButton } from "react-share";
+import { FacebookIcon, TwitterIcon } from "react-share";
 
 const LoginPortalStyyles = styled.div`
     background-color: var(--primary-bg);
@@ -98,8 +100,12 @@ const MenuAddPlaylist = ({ setOpen, data, myAlbum, setMyAlbum }) => {
     const [albumText, setAlbumText] = useState("");
 
     const handleCreateNewAlbum = async () => {
-        if (albumText === "" || !users) {
-            toast("Đã xảy ra lỗi!", { type: "error" });
+        if (albumText === "" || !users.activeUser) {
+            if (!users.activeUser) {
+                toast("Vui lòng đăng nhập!", { type: "error" });
+            } else {
+                toast("Đã xảy ra lỗi!", { type: "error" });
+            }
             return;
         }
         const docRef = doc(database, "users", users.id);
@@ -138,9 +144,11 @@ const MenuAddPlaylist = ({ setOpen, data, myAlbum, setMyAlbum }) => {
         const docSnap = await getDoc(docRef);
 
         const albumList = docSnap.data().myAlbum;
+        let haveAlbum = false;
         for (let i = 0; i < albumList.length; i++) {
             if (albumList[i].name === albumName) {
                 let flag = false;
+                haveAlbum = true;
                 for (let j = 0; j < albumList[i].data.length; j++) {
                     if (albumList[i].data[j].encodeId === data.encodeId) {
                         flag = true;
@@ -151,6 +159,10 @@ const MenuAddPlaylist = ({ setOpen, data, myAlbum, setMyAlbum }) => {
                     break;
                 }
             }
+        }
+        if (!haveAlbum) {
+            toast("Đã xảy ra lỗi!", { type: "error" });
+            return;
         }
         await updateDoc(docRef, {
             myAlbum: albumList,
@@ -237,10 +249,11 @@ const MenuAddPlaylist = ({ setOpen, data, myAlbum, setMyAlbum }) => {
 };
 
 const LoginPortal = ({ setOpen, data, myAlbum, setMyAlbum }) => {
-    const user = useSelector(state => state.users);
+    const user = useSelector((state) => state.users);
     const [openMenuAlbum, setpenMenuAlbum] = useState(false);
     const [openComment, setOpenComment] = useState(false);
     const dispatch = useDispatch();
+    // console.log('data', data);
 
     return (
         <LoginPortalStyyles className="menu menu-settings setting-header header-dropdown pad-t-0">
@@ -269,7 +282,7 @@ const LoginPortal = ({ setOpen, data, myAlbum, setMyAlbum }) => {
                         </button>
                     </li>
                 </Tippy>
-                {/*  */}
+                {/* CMT */}
                 <li
                     onClick={() => {
                         if (!user.activeUser) {
@@ -286,6 +299,28 @@ const LoginPortal = ({ setOpen, data, myAlbum, setMyAlbum }) => {
                     </button>
                 </li>
                 <Comment song={data} open={openComment} setOpen={setOpenComment} />
+                {/* SHARE */}
+                <li
+                    onClick={() => {
+                        if (!user.activeUser) {
+                            toast("Vui lòng đăng nhập!", { type: "error" });
+                            return;
+                        }
+                        // setOpenComment((open) => !open);
+                    }}
+                    className="header-player-setting"
+                >
+                    <button className="w-full zm-btn button cursor-pointer" tabIndex={0}>
+                        <i className="icon ic-share"></i>
+                        <FacebookShareButton
+                            url={data.link.includes('zingmp3') ? data.link : `https://zingmp3.vn${data.link}` }
+                            quote={"HUFI MUSIC - Nghe nhạc chất lượng cao"}
+                            hashtag={"#HUFI_MUSIC"}
+                        >
+                             Chia sẻ
+                        </FacebookShareButton>
+                    </button>
+                </li>
             </ul>
         </LoginPortalStyyles>
     );

@@ -16,12 +16,12 @@ const ItemSetting = () => {
          offset={[0, 2]}
          placement={"bottom-end"}
       >
-         {/* <div className="relative">
+         <div className="relative">
             <div className="setting_item setting_item-set relative" onClick={() => setOpen((value) => !value)}>
                <i className="icon ic-settings  pointer-events-none"></i>
                {!open && <span className="setting_item-title">Cài Đặt</span>}
             </div>
-         </div> */}
+         </div>
       </Tippy>
    )
 }

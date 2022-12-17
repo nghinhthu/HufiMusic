@@ -58,7 +58,7 @@ function AdminPage() {
             navigate("/404");
         }
 
-        const getListUser = async() => {
+        const getListUser = async () => {
             const querySnapshot = await getDocs(collection(database, "users"));
             const list = [];
             querySnapshot.forEach((doc) => {
@@ -68,7 +68,7 @@ function AdminPage() {
             setListUserFilter(list);
         };
 
-        const getListSong = async() => {
+        const getListSong = async () => {
             const data = await axios.get(`https://api-zingmp3.vercel.app/api/newreleasechart`);
             setListSong(data.data.data.items);
             setListSongFilter(data.data.data.items);
@@ -124,159 +124,127 @@ function AdminPage() {
             }
         }
     };
-    return ( <
-            >
-            <
-            div className = "user-management" >
-            <
-            div className = "table-users__header" >
-            <
-            select value = { selectedHeader }
-            onChange = {
-                (e) => {
-                    setSelectedHeader(e.target.value);
-                }
-            }
-            className = "table-users__header-select" >
-            <
-            option value = "user" > Users Management < /option> <
-            option value = "song" > Songs Management < /option> { /* <option value="artist">Artists Management</option> */ } <
-            /select> <
-            /div> <
-            div className = "action-users" > {
-                selectedHeader === "user" && ( <
-                    div className = "add-user" >
-                    <
-                    span className = "add-user-icon ic-add" > < /span> <
-                    button onClick = { handleAdd }
-                    className = "add-user-btn" >
-                    Thêm người dùng <
-                    /button> <
-                    /div>
-                )
-            } <
-            div className = "search-user" >
-            <
-            input value = { searchText }
-            onChange = { handleSearch }
-            type = "text"
-            className = "search-user-input"
-            placeholder = "Tìm kiếm" /
-            >
-            <
-            /div> <
-            /div> {
-                selectedHeader === "user" && ( <
-                    div className = "table-users" >
-                    <
-                    table >
-                    <
-                    tr >
-                    <
-                    th > STT < /th> <
-                    th > Tên < /th> <
-                    th > Email < /th> <
-                    th > Bài hát yêu thích < /th> <
-                    th > Album đã tạo < /th> <
-                    th > Ngày đăng ký < /th> <
-                    th > Hành động < /th> <
-                    /tr>
-
-                    {
-                        listUserFilter.map((user, index) => {
-                            return ( <
-                                tr key = { index } >
-                                <
-                                td > { index + 1 } < /td> <
-                                td > { user.name } < /td> <
-                                td > { user.email } < /td> <
-                                td > { user.favouriteSongs.length } < /td> <
-                                td > { user.myAlbum.length } < /td> <
-                                td > { user.timestamp.toDate().toDateString() } < /td> <
-                                td >
-                                <
-                                div className = "table-users__action" >
-                                <
-                                button onClick = {
-                                    () => {
-                                        if (!addUser && !deleteUser) {
-                                            setEditUser(!editUser);
-                                            setUserSelected(user);
-                                        }
-                                    }
-                                }
-                                className = "table-users__action-btn table-users__action-edit" >
-                                Chỉnh sửa <
-                                /button> <
-                                button onClick = {
-                                    () => {
-                                        if (!addUser && !editUser) {
-                                            setDeleteUser(!editUser);
-                                            setUserSelected(user);
-                                        }
-                                    }
-                                }
-                                className = "table-users__action-btn table-users__action-delete" >
-                                Xóa <
-                                /button> <
-                                /div> <
-                                /td> <
-                                /tr>
-                            );
-                        })
-                    } <
-                    /table> <
-                    /div>
-                )
-            } {
-                selectedHeader === "song" && ( <
-                    div className = "table-users" >
-                    <
-                    table >
-                    <
-                    tr >
-                    <
-                    th > STT < /th> <
-                    th > Thumbnail < /th> <
-                    th > Bài hát < /th> <
-                    th > Nghệ sĩ < /th> <
-                    th > Ngày ra mắt < /th> <
-                    /tr>
-
-                    {
-                        listSongFilter.map((song, index) => {
-                            return ( <
-                                tr key = { index } >
-                                <
-                                td > { index + 1 } < /td> <
-                                td >
-                                <
-                                img className = "table__img"
-                                src = { song.thumbnailM }
-                                alt = "" / >
-                                <
-                                /td> <
-                                td > { song.title } < /td> <
-                                td > { song.artistsNames } < /td> <
-                                td > { new Date(song.releaseDate * 1000).toLocaleDateString() } < /td> <
-                                /tr>
-                            );
-                        })
-                    } <
-                    /table> <
-                    /div>
-                )
-            } <
-            /div> {
-                addUser && < AddUser setAddUser = { setAddUser }
-                />} {
-                    editUser && < EditUser user = { userSelected }
-                    setEditUser = { setEditUser }
-                    />} {
-                        deleteUser && < DeleteUser user = { userSelected }
-                        setDeleteUser = { setDeleteUser }
-                        />} <
+    return (
+        <>
+            <div className="user-management">
+                <div className="table-users__header">
+                    <select
+                        value={selectedHeader}
+                        onChange={(e) => {
+                            setSelectedHeader(e.target.value);
+                        }}
+                        className="table-users__header-select"
+                    >
+                        <option value="user">Users Management</option>
+                        <option value="song">Songs Management</option>
+                        {/* <option value="artist">Artists Management</option> */}
+                    </select>
+                </div>
+                <div className="action-users">
+                    {selectedHeader === "user" && (
+                        <div className="add-user">
+                            <span className="add-user-icon ic-add"></span>
+                            <button onClick={handleAdd} className="add-user-btn">
+                                Thêm người dùng
+                            </button>
+                        </div>
+                    )}
+                    <div className="search-user">
+                        <input
+                            value={searchText}
+                            onChange={handleSearch}
+                            type="text"
+                            className="search-user-input"
+                            placeholder="Tìm kiếm"
                         />
-                    );
-                }
-                export default AdminPage;
+                    </div>
+                </div>
+                {selectedHeader === "user" && (
+                    <div className="table-users">
+                        <table>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Bài hát yêu thích</th>
+                                <th>Album đã tạo</th>
+                                <th>Ngày đăng ký</th>
+                                <th>Hành động</th>
+                            </tr>
+
+                            {listUserFilter.map((user, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.favouriteSongs.length}</td>
+                                        <td>{user.myAlbum.length}</td>
+                                        <td>{user.timestamp.toDate().toDateString()}</td>
+                                        <td>
+                                            <div className="table-users__action">
+                                                <button
+                                                    onClick={() => {
+                                                        if (!addUser && !deleteUser) {
+                                                            setEditUser(!editUser);
+                                                            setUserSelected(user);
+                                                        }
+                                                    }}
+                                                    className="table-users__action-btn table-users__action-edit"
+                                                >
+                                                    Chỉnh sửa
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        if (!addUser && !editUser) {
+                                                            setDeleteUser(!editUser);
+                                                            setUserSelected(user);
+                                                        }
+                                                    }}
+                                                    className="table-users__action-btn table-users__action-delete"
+                                                >
+                                                    Xóa
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </table>
+                    </div>
+                )}
+                {selectedHeader === "song" && (
+                    <div className="table-users">
+                        <table>
+                            <tr>
+                                <th>STT</th>
+                                <th>Thumbnail</th>
+                                <th>Bài hát</th>
+                                <th>Nghệ sĩ</th>
+                                <th>Ngày ra mắt</th>
+                            </tr>
+
+                            {listSongFilter.map((song, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>
+                                            <img className="table__img" src={song.thumbnailM} alt="" />
+                                        </td>
+                                        <td>{song.title}</td>
+                                        <td>{song.artistsNames}</td>
+                                        <td>{new Date(song.releaseDate * 1000).toLocaleDateString()}</td>
+                                    </tr>
+                                );
+                            })}
+                        </table>
+                    </div>
+                )}
+            </div>
+            {addUser && <AddUser setAddUser={setAddUser} />}
+            {editUser && <EditUser user={userSelected} setEditUser={setEditUser} />}
+            {deleteUser && <DeleteUser user={userSelected} setDeleteUser={setDeleteUser} />}
+        </>
+    );
+}
+export default AdminPage;

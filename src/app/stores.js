@@ -13,18 +13,18 @@ import toggleRight from "../features/toggleRight/toggleRight"
 import users from "../features/User/userFeatures"
 
 export const store = configureStore({
-    reducer: {
-        formsearch: formSearch,
-        themetoggle: themeToggle,
-        toggleright: toggleRight,
-        setTextBtn: setTextBtn,
-        setOpenMainMv: setOpenMainMv,
-        toggleOpenMain: toggleOpenMain,
-        queueNowPlay: queueNowPlay,
-        logged: logged,
-        setting: setting,
-        lyrics: Lyrics,
-        currentTimes: currentTimes,
-        users: users,
-    },
+   reducer: {
+      formsearch: formSearch,
+      themetoggle: themeToggle,
+      toggleright: toggleRight,
+      setTextBtn: setTextBtn,
+      setOpenMainMv: setOpenMainMv,
+      toggleOpenMain: toggleOpenMain,
+      queueNowPlay: queueNowPlay,
+      logged: logged,
+      setting: setting,
+      lyrics: Lyrics,
+      currentTimes: currentTimes,
+      users: users,
+   },
 })

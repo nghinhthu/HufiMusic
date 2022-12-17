@@ -9,6 +9,8 @@ import { memo } from "react";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
 
+import Tippy from "@tippyjs/react";
+
 const customStyles = {
     content: {
         top: "50%",
@@ -22,11 +24,54 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
+function CommentMore({ cmt, setOpen, setCmtEdit }) {
+    const handleDelete = () => {
+        const db = getDatabase();
+        const connectedRef = ref(db, "comments/" + cmt.id);
+        remove(connectedRef);
+        setOpen(false);
+    };
+
+    const handleEdit = () => {
+        setCmtEdit(cmt.id);
+
+    };
+    return (
+        <div className="menu-more">
+            <div onClick={handleDelete} className="menu-more-item menu-more-delete">
+                Xóa bình luận
+            </div>
+            <div onClick={handleEdit} className="menu-more-item menu-more-edit">
+                Sửa bình luận
+            </div>
+        </div>
+    );
+}
+
 function Comment({ song, open, setOpen }) {
     const user = useSelector((state) => state.users);
 
+    const [cmtEdit, setCmtEdit] = useState("");
+
+    const [cmtEditText, setCmtEditText] = useState("");
+
+    const [openMore, setOpenMore] = useState(false);
+
     const [commentText, setCommentText] = useState("");
     const [listComments, setListComments] = useState([]);
+
+    const handleEditCmt = (cmt) => {
+        const newCmt = {
+            ...cmt,
+            message: cmtEditText,
+        };
+        const db = getDatabase();
+        const updates = {};
+        updates["/comments/" + cmt.id] = newCmt;
+        update(ref(db), updates);
+        setCmtEditText('');
+        setCmtEdit('');
+    }
 
     const handleSubmit = (event) => {
         const db = getDatabase();
@@ -40,7 +85,7 @@ function Comment({ song, open, setOpen }) {
             username: "",
             userId: null,
         };
-        comment.avatar = user?.imgUrl || 'https://avatar.talk.zdn.vn/default';
+        comment.avatar = user?.imgUrl || "https://avatar.talk.zdn.vn/default";
         comment.username = user.name || user.email;
         const d = new Date().toLocaleString();
         comment.createdAt = d;
@@ -76,7 +121,7 @@ function Comment({ song, open, setOpen }) {
                         });
                     }
                     listComments = listComments.filter((item) => item.songId === song.encodeId);
-                    console.log('listcomment:', listComments);
+                    console.log("listcomment:", listComments);
                     let listCommentsLocal = listComments.filter((item) => item.parentId === "");
                     listCommentsLocal.forEach((ele) => {
                         ele.listChild = [];
@@ -84,6 +129,8 @@ function Comment({ song, open, setOpen }) {
                         ele.listChild = [...listChild];
                     });
                     setListComments(listCommentsLocal);
+                } else {
+                    setListComments([]);
                 }
             });
         };
@@ -123,13 +170,39 @@ function Comment({ song, open, setOpen }) {
                             {listComments.map((cmt, index) => {
                                 return (
                                     <div key={index} className="comment_item">
-                                        <div className="comment_item-img">
+                                        <div onClick={() => setOpenMore(true)} className="comment_item-img">
                                             <img src={cmt.avatar} />
                                         </div>
                                         <div className="comment_item-body">
                                             <div className="comment_item-body_name">{cmt.username}</div>
                                             <div className="comment_item-body_content">{cmt.message}</div>
+                                            {cmtEdit === cmt.id && (
+                                                <input
+                                                    value={cmtEditText}
+                                                    onChange={(e) => setCmtEditText(e.target.value)}
+                                                    onBlur={() => setCmtEdit("")}
+                                                    onKeyUp={(e)=> {
+                                                        if(e.keyCode === 13 && cmtEditText!=='') {
+                                                            handleEditCmt(cmt);
+                                                        }
+                                                    }}
+                                                    className="comment_item-body_content-edit"
+                                                    placeholder="Nhập bình luận"
+                                                />
+                                            )}
                                         </div>
+                                        {cmt.userId === user.id && (
+                                            <div onClick={() => setOpenMore(!openMore)} className="comment_item-more">
+                                                <i className="ic-more"></i>
+                                                {openMore && (
+                                                    <CommentMore
+                                                        setCmtEdit={setCmtEdit}
+                                                        setOpen={setOpenMore}
+                                                        cmt={cmt}
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
