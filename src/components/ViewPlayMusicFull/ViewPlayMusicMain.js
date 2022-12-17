@@ -99,9 +99,9 @@ const ViewPlayMusicMain = () => {
                   <li onClick={() => setOpen(1)} className={`nowplaying-header_tab-item ${open === 1 ? "active" : ""}`}>
                      Danh sách phát
                   </li>
-                  <li onClick={() => setOpen(2)} className={`nowplaying-header_tab-item ${open === 2 ? "active" : ""}`}>
+                  {/* <li onClick={() => setOpen(2)} className={`nowplaying-header_tab-item ${open === 2 ? "active" : ""}`}>
                      Karaoke
-                  </li>
+                  </li> */}
                   <li
                      onClick={() => setOpen(3)}
                      id="full-lyrics"

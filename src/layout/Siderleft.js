@@ -79,10 +79,10 @@ const Siderleft = () => {
                         }
                         title="#topchart"
                     >
-                        <div className="cursor-pointer">
+                        {/* <div className="cursor-pointer">
                             <i className="icon  ic-24-ChartTab"></i>
                             <span className="sider_menu-item-title"> Top Chart</span>
-                        </div>
+                        </div> */}
                     </NavLink>
                     <NavLink
                         to="/radio"
@@ -93,10 +93,10 @@ const Siderleft = () => {
                         }
                         title="Radio"
                     >
-                        <div className="cursor-pointer">
+                        {/* <div className="cursor-pointer">
                             <i className="icon  ic-24-RadioTab"></i>
                             <span className="sider_menu-item-title">Radio</span>
-                        </div>
+                        </div> */}
                     </NavLink>
                     <NavLink
                         to="/newfeed/Viet-Nam/IWZ9Z08I"
