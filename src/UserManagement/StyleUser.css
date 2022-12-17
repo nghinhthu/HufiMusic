@@ -1,0 +1,117 @@
+.adduser-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    padding: 30px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    color: #2D385E;
+    opacity: 1 !important;
+    z-index: 111111 !important;
+    width: 400px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 3px 6px 0 rgb(0 0 0 / 30%), 0 0 2px 0 rgb(0 0 0 / 10%);
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 30%), 0 0 2px 0 rgb(0 0 0 / 10%);
+}
+
+.adduser-header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.adduser-title {
+    user-select: none;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.adduser-icon {
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    position: absolute;
+    cursor: pointer;
+}
+
+
+.adduser-body {
+
+}
+
+.adduser-group {
+    position: relative;
+}
+
+.adduser-label {
+    pointer-events: none;
+    position: absolute;
+    transition: all 200ms ease-in;
+    top: 28px;
+    left: 24px;
+    font-size: 18px;
+    background-color: #fff;
+}
+
+.adduser-input:not(:-ms-input-placeholder) + .adduser-label {
+    top: 3px;
+    left: 24px;
+    font-size: 16px;
+}
+
+.adduser-input:focus + .adduser-label,
+.adduser-input:not(:placeholder-shown) + .adduser-label {
+    top: 3px;
+    left: 24px;
+    font-size: 16px;
+}
+
+.adduser-input {
+    background-color: #fff;
+    width: 100%;
+    color: #333333;
+    font-size: 18px;
+    height: 50px;
+    margin-top: 16px;
+    padding: 12px 22px;
+    border-radius: 4px;
+    border: solid 1px #bcc2ce;
+    outline: none;
+    -webkit-box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%), 0 0 2px 0 rgb(0 0 0 / 10%);
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%), 0 0 2px 0 rgb(0 0 0 / 10%);
+}
+
+.adduser-footer {
+
+}
+
+.adduser-btn {
+    color: white;
+    width: 100%;
+    padding: 12px;
+    margin-top: 2rem;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    background-color: #486ff2;
+    border-color: #486ff2;
+    box-shadow: 0px 2px 3px #9c9c9c;
+    transition: opacity 200ms ease-in;
+}
+
+.adduser-btn:hover {
+    opacity: 0.8;
+}
+
+.edit-btn {
+    background-color: rgb(245, 196, 90) !important;
+}
+
+.delete-btn {
+    background-color: rgb(248, 94, 94) !important;
+}
