@@ -313,11 +313,11 @@ const LoginPortal = ({ setOpen, data, myAlbum, setMyAlbum }) => {
                     <button className="w-full zm-btn button cursor-pointer" tabIndex={0}>
                         <i className="icon ic-share"></i>
                         <FacebookShareButton
-                            url={data.link.includes('zingmp3') ? data.link : `https://zingmp3.vn${data.link}` }
+                            url={data.link.includes("zingmp3") ? data.link : `https://zingmp3.vn${data.link}`}
                             quote={"HUFI MUSIC - Nghe nhạc chất lượng cao"}
                             hashtag={"#HUFI_MUSIC"}
                         >
-                             Chia sẻ
+                            Chia sẻ
                         </FacebookShareButton>
                     </button>
                 </li>
@@ -459,7 +459,9 @@ const ItemRighPlayer = ({ data, index, items, isHistory, setToggleSilde, lastInd
                         animation={"perspective-extreme"}
                         onClickOutside={() => setOpen(false)}
                         visible={open}
-                        content={<LoginPortal data={data} setOpen={setOpen} />}
+                        content={
+                            <LoginPortal data={data} myAlbum={myAlbum} setMyAlbum={setMyAlbum} setOpen={setOpen} />
+                        }
                         interactive={true}
                         arrow={false}
                         offset={[0, 10]}

@@ -18,6 +18,7 @@ import LoadingIcon from "../components/Icon/LoadingIcon";
 
 import axios from "axios";
 import { tmdAPI } from "../config";
+import DetailsUser from "../UserManagement/DetailsUser";
 
 const themeAdmin = {
     name: "Xanh Da Trời",
@@ -48,8 +49,11 @@ function AdminPage() {
     const [addUser, setAddUser] = useState(false);
     const [editUser, setEditUser] = useState(false);
     const [deleteUser, setDeleteUser] = useState(false);
+    const [detailsUser, setDetailsUser] = useState(false);
     const [userSelected, setUserSelected] = useState(null);
     const [selectedHeader, setSelectedHeader] = useState("user");
+
+    const [isSongs, setIsSongs] = useState(false);
 
     const navigate = useNavigate();
 
@@ -103,7 +107,7 @@ function AdminPage() {
     }, []);
 
     const handleAdd = () => {
-        if (!editUser && !deleteUser) setAddUser(!addUser);
+        if (!editUser && !deleteUser && !detailsUser) setAddUser(!addUser);
     };
 
     const handleSearch = (e) => {
@@ -178,14 +182,30 @@ function AdminPage() {
                                         <td>{index + 1}</td>
                                         <td>{user.name}</td>
                                         <td>{user.email}</td>
-                                        <td>{user.favouriteSongs.length}</td>
-                                        <td>{user.myAlbum.length}</td>
+                                        <td className="cursor-pointer"
+                                            onClick={() => {
+                                                if (!addUser && !deleteUser && !editUser) {
+                                                    setIsSongs(() => true);
+                                                    setDetailsUser(true);
+                                                    setUserSelected(user);
+                                                }
+                                            }}
+                                        >
+                                            {user.favouriteSongs.length}
+                                        </td>
+                                        <td className="cursor-pointer" onClick={() => {
+                                            if (!addUser && !deleteUser && !editUser) {
+                                                setIsSongs(() => false);
+                                                setDetailsUser(true);
+                                                setUserSelected(user);
+                                            }
+                                        }}>{user.myAlbum.length}</td>
                                         <td>{user.timestamp.toDate().toDateString()}</td>
                                         <td>
                                             <div className="table-users__action">
                                                 <button
                                                     onClick={() => {
-                                                        if (!addUser && !deleteUser) {
+                                                        if (!addUser && !deleteUser && !detailsUser) {
                                                             setEditUser(!editUser);
                                                             setUserSelected(user);
                                                         }
@@ -196,7 +216,7 @@ function AdminPage() {
                                                 </button>
                                                 <button
                                                     onClick={() => {
-                                                        if (!addUser && !editUser) {
+                                                        if (!addUser && !editUser && !detailsUser) {
                                                             setDeleteUser(!editUser);
                                                             setUserSelected(user);
                                                         }
@@ -244,6 +264,7 @@ function AdminPage() {
             {addUser && <AddUser setAddUser={setAddUser} />}
             {editUser && <EditUser user={userSelected} setEditUser={setEditUser} />}
             {deleteUser && <DeleteUser user={userSelected} setDeleteUser={setDeleteUser} />}
+            {detailsUser && <DetailsUser user={userSelected} setDetailsUser={setDetailsUser} songs={isSongs}/>}
         </>
     );
 }
