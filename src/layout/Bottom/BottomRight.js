@@ -198,7 +198,7 @@ const BottomRight = () => {
                                 <div className="empty-img" />
                             </div>
                             <div className="empty-queue">
-                                <div className="content">Khám phá thêm các bài hát mới của D4T MP3</div>
+                                <div className="content">Khám phá thêm các bài hát mới của HUFI MP3</div>
                                 <button
                                     onClick={async () => {
                                         dispatch(setReady(false));
