@@ -140,7 +140,7 @@ const SettingPortal = () => {
                </li>
             </Tippy>
          </ul>
-         <footer className="footer">
+         {/* <footer className="footer">
             <ul className="menu-list zm-nav-footer">
                <li>
                   <a
@@ -179,7 +179,7 @@ const SettingPortal = () => {
                   </a>
                </li>
             </ul>
-         </footer>
+         </footer> */}
       </SettingPortalStyles>
    )
 }
